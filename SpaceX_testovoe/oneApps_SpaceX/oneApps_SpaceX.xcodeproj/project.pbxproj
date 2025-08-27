@@ -10,6 +10,8 @@
 		A96168A12E3E527700AA1792 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A96168A02E3E527700AA1792 /* SnapKit */; };
 		A96168A42E3E528300AA1792 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A96168A32E3E528300AA1792 /* Alamofire */; };
 		A9E8C3922E40889600316E17 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A9E8C3912E40889600316E17 /* Kingfisher */; };
+		A9F245422E5E278D001AC792 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = A9F245412E5E278D001AC792 /* RswiftLibrary */; };
+		A9F245442E5E278D001AC792 /* rswift in Frameworks */ = {isa = PBXBuildFile; productRef = A9F245432E5E278D001AC792 /* rswift */; };
 		A9F599582E59D20600950B28 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = A9F599572E59D20600950B28 /* Swinject */; };
 /* End PBXBuildFile section */
 
@@ -43,10 +45,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9F245422E5E278D001AC792 /* RswiftLibrary in Frameworks */,
 				A9E8C3922E40889600316E17 /* Kingfisher in Frameworks */,
 				A96168A12E3E527700AA1792 /* SnapKit in Frameworks */,
 				A96168A42E3E528300AA1792 /* Alamofire in Frameworks */,
 				A9F599582E59D20600950B28 /* Swinject in Frameworks */,
+				A9F245442E5E278D001AC792 /* rswift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +97,8 @@
 				A96168A32E3E528300AA1792 /* Alamofire */,
 				A9E8C3912E40889600316E17 /* Kingfisher */,
 				A9F599572E59D20600950B28 /* Swinject */,
+				A9F245412E5E278D001AC792 /* RswiftLibrary */,
+				A9F245432E5E278D001AC792 /* rswift */,
 			);
 			productName = oneApps_SpaceX;
 			productReference = A961683D2E3E51A300AA1792 /* oneApps_SpaceX.app */;
@@ -128,6 +134,7 @@
 				A96168A22E3E528300AA1792 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				A9E8C3902E40889600316E17 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				A9F599562E59D20600950B28 /* XCRemoteSwiftPackageReference "Swinject" */,
+				A9F245402E5E278D001AC792 /* XCRemoteSwiftPackageReference "R" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A961683E2E3E51A300AA1792 /* Products */;
@@ -389,6 +396,14 @@
 				minimumVersion = 8.5.0;
 			};
 		};
+		A9F245402E5E278D001AC792 /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.8.0;
+			};
+		};
 		A9F599562E59D20600950B28 /* XCRemoteSwiftPackageReference "Swinject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Swinject/Swinject";
@@ -414,6 +429,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A9E8C3902E40889600316E17 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		A9F245412E5E278D001AC792 /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9F245402E5E278D001AC792 /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		A9F245432E5E278D001AC792 /* rswift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9F245402E5E278D001AC792 /* XCRemoteSwiftPackageReference "R" */;
+			productName = rswift;
 		};
 		A9F599572E59D20600950B28 /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;

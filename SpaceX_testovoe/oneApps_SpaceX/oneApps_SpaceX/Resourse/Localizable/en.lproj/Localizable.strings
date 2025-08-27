@@ -23,3 +23,5 @@
 "country.marshall_islands" = "Republic of the Marshall Islands";
 "country.usa" = "United States";
 "deff" = "not specified";
+"no_date" = "Date not specified";
+"view_launches" = "View Launches";

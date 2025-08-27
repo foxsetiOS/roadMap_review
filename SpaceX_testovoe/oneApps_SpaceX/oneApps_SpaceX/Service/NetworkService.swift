@@ -10,14 +10,16 @@ protocol NetworkServiceProtocol {
 
 final class NetworkService: NetworkServiceProtocol {
     
-    private let baseApiUrl = "https://api.spacexdata.com/v4"
+    private let baseApiUrl = String.API.baseUrl
+    private let endPointRocket = String.API.rocketsEndpoint
+    private let endpointLaunch = String.API.launchesEndpoint
     
     func fetchRockets() async throws -> [Rocket] {
-        try await request(endpoint: "\(baseApiUrl)/rockets")
+        try await request(endpoint: "\(baseApiUrl)\(endPointRocket)")
     }
     
     func fetchLaunches() async throws -> [Launch] {
-        try await request(endpoint: "\(baseApiUrl)/launches")
+        try await request(endpoint: "\(baseApiUrl)\(endpointLaunch)")
     }
     
     private func request<R: Decodable>(endpoint: String) async throws -> R {

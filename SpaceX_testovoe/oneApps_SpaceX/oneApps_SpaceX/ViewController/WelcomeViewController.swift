@@ -8,14 +8,14 @@ final class WelcomeViewController: UIViewController {
         let imagaView = UIImageView()
         imagaView.contentMode = .scaleAspectFill
         
-        imagaView.image = UIImage(named: "spacex") ?? UIImage(named: "SpaceXlogo")
+        imagaView.image = UIImage(named: String.AssetName.spacex) ?? UIImage(named: String.UI.spacexLogo)
         return imagaView
     }()
     
     private let startButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Поехали 🚀", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        button.setTitle(String.UI.letsGo, for: .normal)
+        button.titleLabel?.font = UIFont.LabGrotesqueFont(style: .bold, size: .medium)
         button.backgroundColor = Theme.Color.colorCollection
         button.layer.cornerRadius = 12
         button.setTitleColor(.white, for: .normal)
@@ -28,7 +28,7 @@ final class WelcomeViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(String.FatalError.initCoder)
     }
     
     override func viewDidLoad() {

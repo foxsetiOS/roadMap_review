@@ -1,9 +1,9 @@
 import Foundation
 import Swinject
 
-final class DiContainer {
+final class DIContainer {
 
-    static let shared = DiContainer()
+    static let shared = DIContainer()
     private let container = Container()
     
     private init() {
@@ -17,6 +17,9 @@ final class DiContainer {
     }
     
     var networkService: NetworkServiceProtocol {
-        container.resolve(NetworkServiceProtocol.self)!
+        guard let service = container.resolve(NetworkServiceProtocol.self) else {
+            fatalError(String.FatalError.containerDIContainer)
+        }
+        return service
     }
 }

@@ -3,7 +3,6 @@ import SnapKit
 import Kingfisher
 
 final class RocketDetailViewController: UIViewController {
-    
     private let viewModel: RocketDetailViewModel
     private let scrollView = UIScrollView()
     private let contentStackView = UIStackView()
@@ -17,9 +16,8 @@ final class RocketDetailViewController: UIViewController {
     }()
     
     private let titleLabel: UILabel = {
-        
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .medium)
+        label.font = UIFont.LabGrotesqueFont(style: .medium, size: .title)
         label.textColor = Theme.Color.colorText
         return label
     }()
@@ -34,7 +32,7 @@ final class RocketDetailViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(String.FatalError.initCoder)
     }
     
     override func viewDidLoad() {
@@ -111,49 +109,50 @@ final class RocketDetailViewController: UIViewController {
             
             if let firstFlight = rocket.firstFlight,
                let formattedDate = DateFormatting.formatFirstFlight(firstFlight) {
-                parameters.append(("first_flight".localized, formattedDate))
+                parameters.append((String.LocalizationKey.firstFlight.localized, formattedDate))
             }
 
-            parameters.append(("country".localized, Localized.localizedCountry(rocket.country)))
+            parameters.append((String.LocalizationKey.country.localized, Localized.localizedCountry(rocket.country)))
 
-            if let cost = rocket.costPerLaunch, cost > 0 {
-                parameters.append(("launch_cost".localized, formatCurrency(cost)))
+            if let cost = rocket.costPerLaunch, cost > 0,
+               let formattedCost = formatCurrency(cost) {
+                parameters.append((String.LocalizationKey.launchCost.localized, formattedCost))
             }
             
             return parameters
         }())
         
-        addSection(title: "first_stage".localized, parameters: {
+        addSection(title: String.UI.fuelStage.localized, parameters: {
             var parameters: [(String, String)] = []
             
             if let engines = rocket.firstStage?.engines, engines > 0 {
-                parameters.append(("engines_count".localized, "\(engines)"))
+                parameters.append((String.LocalizationKey.enginesCount.localized, "\(engines)"))
             }
 
             if let fuelAmount = rocket.firstStage?.fuelAmountTons, fuelAmount > 0 {
-                parameters.append(("fuel_amount".localized, "\(fuelAmount) " + "tons".localized))
+                parameters.append((String.LocalizationKey.fuelAmount.localized, "\(fuelAmount) " + String.LocalizationKey.tons.localized))
             }
 
             if let burnTime = rocket.firstStage?.burnTimeSec, burnTime > 0 {
-                parameters.append(("burn_time".localized, "\(burnTime) " + "sec".localized))
+                parameters.append((String.LocalizationKey.burnTime.localized, "\(burnTime) " + String.LocalizationKey.sec.localized))
             }
             
             return parameters
         }())
         
-        addSection(title: "second_stage".localized, parameters: {
+        addSection(title: String.UI.secondStage.localized, parameters: {
             var parameters: [(String, String)] = []
             
             if let engines = rocket.secondStage?.engines, engines > 0 {
-                parameters.append(("engines_count".localized, "\(engines)"))
+                parameters.append((String.LocalizationKey.enginesCount.localized, "\(engines)"))
             }
             
             if let fuelAmount = rocket.secondStage?.fuelAmountTons, fuelAmount > 0 {
-                parameters.append(("fuel_amount".localized, "\(fuelAmount) " + "ton".localized))
+                parameters.append((String.LocalizationKey.fuelAmount.localized, "\(fuelAmount) " + String.LocalizationKey.ton.localized))
             }
  
             if let burnTime = rocket.secondStage?.burnTimeSec, burnTime > 0 {
-                parameters.append(("burn_time".localized, "\(burnTime) " + "sec".localized))
+                parameters.append((String.LocalizationKey.burnTime.localized, "\(burnTime) " + String.LocalizationKey.sec.localized))
             }
             
             return parameters
@@ -184,43 +183,43 @@ final class RocketDetailViewController: UIViewController {
         
         // Добавляем только если есть данные
         if let heightNumber = height.value {
-            parameters.append(("height".localized + ", \(heightNumber)", heightNumber))
+            parameters.append((String.LocalizationKey.height.localized + ", \(heightNumber)", heightNumber))
         }
         
         if let diameterNumber = diameter.value {
-            parameters.append(("diameter".localized + ", \(diameterNumber)", diameterNumber))
+            parameters.append((String.LocalizationKey.diameter.localized + ", \(diameterNumber)", diameterNumber))
         }
         
         if let massNumber = mass.value {
-            parameters.append(("mass".localized + ", \(massNumber)", massNumber))
+            parameters.append((String.LocalizationKey.mass.localized + ", \(massNumber)", massNumber))
         }
         
         if let payloadNumber = payload.value {
-            parameters.append(("payload".localized + ", \(payloadNumber)", payloadNumber))
+            parameters.append((String.LocalizationKey.payload.localized + ", \(payloadNumber)", payloadNumber))
         }
         
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.backgroundColor = .clear
         
-        let horizontlStack = UIStackView()
-        horizontlStack.axis = .horizontal
-        horizontlStack.spacing = 16
-        horizontlStack.distribution = .fill
+        let horizontalStack = UIStackView()
+        horizontalStack.axis = .horizontal
+        horizontalStack.spacing = 16
+        horizontalStack.distribution = .fill
         
         // add стек
         for parameter in parameters {
             let parameterView = makeCircularParameterView(name: parameter.0, value: parameter.1)
-            horizontlStack.addArrangedSubview(parameterView)
+            horizontalStack.addArrangedSubview(parameterView)
         }
         
-        scrollView.addSubview(horizontlStack)
+        scrollView.addSubview(horizontalStack)
         
         // Констрейнты для скроллвью - 3 подставил / 2 не подошло
         scrollView.snp.makeConstraints { $0.height.equalTo(Theme.Size.circularParameter + Theme.Spacing.small * 3) }
         
         // Констрейнты для стека внутри скроллвью
-        horizontlStack.snp.makeConstraints {
+        horizontalStack.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(Theme.Spacing.default)
             $0.height.equalTo(Theme.Size.circularParameter)
         }
@@ -229,13 +228,12 @@ final class RocketDetailViewController: UIViewController {
     }
     
     private func makeCircularParameterView(name: String, value: String) -> UIView {
-        
         let containerView = UIView()
         containerView.layer.cornerRadius = 32
         containerView.backgroundColor = Theme.Color.colorCollection
         
         let valueLabel = UILabel()
-        valueLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        valueLabel.font = UIFont.LabGrotesqueFont(style: .bold, size: .medium)
         valueLabel.textColor = Theme.Color.colorText
         valueLabel.textAlignment = .center
         valueLabel.numberOfLines = 0
@@ -244,7 +242,7 @@ final class RocketDetailViewController: UIViewController {
         valueLabel.text = value
         
         let nameLabel = UILabel()
-        nameLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        nameLabel.font = UIFont.LabGrotesqueFont(style: .bold, size: .regular)
         nameLabel.textColor = Theme.Color.secondColorText
         nameLabel.textAlignment = .center
         nameLabel.numberOfLines = 0
@@ -285,13 +283,13 @@ final class RocketDetailViewController: UIViewController {
             
             let nameLabel = UILabel()
             nameLabel.text = name
-            nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            nameLabel.font = UIFont.LabGrotesqueFont(style: .regular, size: .medium)
             nameLabel.textColor = Theme.Color.secondColorText
             nameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
             
             let valueLabel = UILabel()
             valueLabel.text = value
-            valueLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+            valueLabel.font = UIFont.LabGrotesqueFont(style: .bold, size: .medium)
             valueLabel.textColor = Theme.Color.colorText
             valueLabel.textAlignment = .right
             
@@ -305,8 +303,8 @@ final class RocketDetailViewController: UIViewController {
     
     private func addLaunchesButton() {
         let launchButton = UIButton(type: .system)
-        launchButton.setTitle("Посмотреть запуски".localized, for: .normal)
-        launchButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        launchButton.setTitle(String.UI.viewLaunches.localized, for: .normal)
+        launchButton.titleLabel?.font = UIFont.LabGrotesqueFont(style: .regular, size: .medium)
         launchButton.backgroundColor = Theme.Color.colorCollection
         launchButton.layer.cornerRadius = 12
         launchButton.setTitleColor(Theme.Color.colorText, for: .normal)
@@ -317,6 +315,7 @@ final class RocketDetailViewController: UIViewController {
     
     private func makeSeparatorView() -> UIView {
         let separator = UIView()
+        separator.backgroundColor = Theme.Color.colorCollection
         separator.snp.makeConstraints { $0.height.equalTo(1) }
         return separator
     }

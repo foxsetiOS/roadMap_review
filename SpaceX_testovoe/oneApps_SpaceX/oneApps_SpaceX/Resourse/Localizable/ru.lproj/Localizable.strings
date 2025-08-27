@@ -23,3 +23,5 @@
 "country.marshall_islands" = "Республика Маршалловы Острова";
 "country.usa" = "США";
 "deff" = "не указано";
+"no_date" = "Дата не указана";
+"view_launches" = "Посмотреть запуски";

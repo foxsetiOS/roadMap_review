@@ -2,11 +2,11 @@ import UIKit
 import SnapKit
 
 final class SettingSegmentCell: UITableViewCell {
-    static let identifier = "SettingSegmentCell"
+    static let identifier = String.CellIdentifier.settingSegmentCell
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.LabGrotesqueFont(style: .regular, size: .medium)
         label.textColor = Theme.Color.colorText
         return label
     }()
@@ -21,11 +21,12 @@ final class SettingSegmentCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         configureUserInterface()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(String.FatalError.initCoder)
     }
     
     private func configureUserInterface() {
@@ -47,7 +48,11 @@ final class SettingSegmentCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    func configure(title: String, options: [String], selected: Int, onChange: @escaping (Int) -> Void) {
+    func configure(title: String,
+                   options: [String],
+                   selected: Int,
+                   onChange: @escaping (Int
+                   ) -> Void) {
         titleLabel.text = title
         segmentControl.removeAllSegments()
         options.enumerated().forEach { index, title in

@@ -6,4 +6,5 @@ enum Localized {
         ]
         return map[englishName] ?? englishName
     }
+    
 }

@@ -10,7 +10,7 @@ final class SettingsViewController: UITableViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(String.FatalError.initCoder)
     }
     
     
@@ -22,9 +22,9 @@ final class SettingsViewController: UITableViewController {
     }
     
     private func configureUserInterface() {
-        title = "settings_title".localized
+        title = String.LocalizationKey.settings.localized
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "close".localized,
+            title: String.LocalizationKey.close.localized,
             style: .plain,
             target: self,
             action: #selector(handleCloseTap)
@@ -73,7 +73,9 @@ final class SettingsViewController: UITableViewController {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSegmentCell.identifier, for: indexPath) as! SettingSegmentCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingSegmentCell.identifier, for: indexPath) as? SettingSegmentCell else {
+            fatalError(String.FatalError.cellDequeue)
+        }
         let settingType = SettingType.allCases[indexPath.section]
         let currentUnit = viewModel.settings.value.first { $0.type == settingType }?.unit
         let options = viewModel.unitOptions(for: settingType)

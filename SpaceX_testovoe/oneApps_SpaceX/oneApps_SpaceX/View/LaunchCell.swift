@@ -13,7 +13,7 @@ final class LaunchCell: UITableViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.LabGrotesqueFont(style: .medium, size: .medium)
         label.textColor = Theme.Color.colorText
         label.numberOfLines = 2
         return label
@@ -21,7 +21,7 @@ final class LaunchCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.LabGrotesqueFont(style: .medium, size: .medium)
         label.textColor = Theme.Color.secondColorText
         return label
     }()
@@ -41,7 +41,7 @@ final class LaunchCell: UITableViewCell {
     
     private let rocketImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "rocketX")?.withRenderingMode(.alwaysTemplate)
+        imageView.image = UIImage(named: "rocketRide")?.withRenderingMode(.alwaysTemplate)
         imageView.tintColor = Theme.Color.secondColorText
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -62,6 +62,7 @@ final class LaunchCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         setupUI()
     }
     
@@ -88,14 +89,7 @@ final class LaunchCell: UITableViewCell {
     
     private func setupConstraints() {
         cardView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(
-                UIEdgeInsets(
-                top: 8,
-                left: 16,
-                bottom: 8,
-                right: 16
-            )
-            )
+            $0.edges.equalToSuperview().inset(Constants.cardViewInsets)
         }
         
         rocketIconView.snp.makeConstraints {
@@ -134,14 +128,7 @@ final class LaunchCell: UITableViewCell {
         }
         
         dateLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(
-                UIEdgeInsets(
-                top: 4,
-                left: 8,
-                bottom: 4,
-                right: 8
-            )
-            )
+            $0.edges.equalToSuperview().inset(Constants.dateLabelInsets)
         }
     }
     
@@ -161,7 +148,7 @@ final class LaunchCell: UITableViewCell {
         // индикатор статуса с иконкой
         if let success = launch.success {
             statusIndicator.backgroundColor = success ? Theme.Color.colorSuccess : Theme.Color.colorFailer
-            let symbolName = success ? "rocket" : "rocketX"
+            let symbolName = success ? "rocketRide" : "rocketFail"
             statusIconImageView.image = UIImage(systemName: symbolName)
         } else {
             statusIndicator.backgroundColor = Theme.Color.colorFailer

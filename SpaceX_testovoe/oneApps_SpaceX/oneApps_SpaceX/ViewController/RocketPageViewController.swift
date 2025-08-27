@@ -17,7 +17,7 @@ class RocketPageViewController: UIPageViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(String.FatalError.initCoder)
     }
     
     override func viewDidLoad() {
@@ -75,7 +75,7 @@ class RocketPageViewController: UIPageViewController {
         rocketDetailViewControllers = rockets.map { rocket in
             let detailViewModel = RocketDetailViewModel(
                 rocketId: rocket.id,
-                networkService: DiContainer.shared.networkService,
+                networkService: DIContainer.shared.networkService,
                 settingsManager: SettingsManager.shared
             )
             let detailViewController = RocketDetailViewController(viewModel: detailViewModel)
@@ -104,12 +104,10 @@ class RocketPageViewController: UIPageViewController {
     }
     
     private func showLoader() {
-        
         activityIndicator.startAnimating()
     }
     
     private func hideLoader() {
-        
         activityIndicator.stopAnimating()
     }
     
@@ -178,7 +176,7 @@ private extension RocketPageViewController {
             navigationItem.title = rocket.name
         }
         
-        let settingsImage = UIImage(named: "Setting")?.withRenderingMode(.alwaysTemplate)
+        let settingsImage = UIImage(named: String.AssetName.setting)?.withRenderingMode(.alwaysTemplate)
         let settingsButton = UIBarButtonItem(image: settingsImage, style: .plain, target: self, action: #selector(handleSettingsTap))
         settingsButton.tintColor = .white
         navigationItem.rightBarButtonItem = settingsButton

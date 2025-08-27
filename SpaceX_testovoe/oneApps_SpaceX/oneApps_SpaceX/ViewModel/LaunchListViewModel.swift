@@ -45,6 +45,23 @@ final class LaunchListViewModel {
     func formatDate(_ dateString: String) -> String {
         DateFormatting.formatLaunchDate(dateString) ?? "—"
     }
+    
+    func launch(at index: Int) -> Launch? {
+        guard index >= 0 && index < launches.value.count else { return nil }
+        return launches.value[index]
+    }
+    
+    func launchCount() -> Int {
+        launches.value.count
+    }
+    
+    func hasLaunchDate(_ launch: Launch) -> Bool {
+        launch.dateUtc != nil
+    }
+    
+    func getLaunchForCell(at indexPath: IndexPath) -> Launch? {
+        launch(at: indexPath.row)
+    }
 }
 
 

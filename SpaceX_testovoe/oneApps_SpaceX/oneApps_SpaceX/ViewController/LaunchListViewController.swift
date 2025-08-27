@@ -12,7 +12,7 @@ final class LaunchListViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError(String.FatalError.initCoder)
     }
     
    override func viewDidLoad() {
@@ -25,21 +25,14 @@ final class LaunchListViewController: UIViewController {
     }
     
    private func configureUserInterface() {
-        
         view.backgroundColor = Theme.Color.colorCollection
-        title = "launches".localized
+        title = String.LocalizationKey.launches.localized
     }
     
     private func configureTableView() {
-        
         launchesTableView.backgroundColor = Theme.Color.colorView
         launchesTableView.separatorStyle = .none
-        launchesTableView.contentInset = UIEdgeInsets(
-            top: 8,
-            left: 0,
-            bottom: 8,
-            right: 0
-        )
+        launchesTableView.contentInset = Constants.tableViewContentInsets
         launchesTableView.register(LaunchCell.self, forCellReuseIdentifier: LaunchCell.identifier)
         launchesTableView.delegate = self
         launchesTableView.dataSource = self
@@ -48,7 +41,6 @@ final class LaunchListViewController: UIViewController {
     }
     
    private func bindViewModel() {
-       
         viewModel.launches.bind { [weak self] _ in
             self?.launchesTableView.reloadData()
         }
@@ -62,7 +54,7 @@ extension LaunchListViewController: UITableViewDataSource, UITableViewDelegate {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        viewModel.launches.value.count
+        viewModel.launchCount()
     }
     
     func tableView(
@@ -73,19 +65,26 @@ extension LaunchListViewController: UITableViewDataSource, UITableViewDelegate {
             withIdentifier: LaunchCell.identifier,
             for: indexPath
         ) as? LaunchCell else {
-            return UITableViewCell()
+            let errorCell = LaunchCell()
+            errorCell.configure(with: Launch(id: "Ошибка", name: "Ошибка загрузки", dateUtc: nil, success: false, rocket: "ошибка загрузки Ракеты"), dateFormatter: { _ in "Ошибка" })
+            return errorCell
         }
         
-        let launch = viewModel.launches.value[indexPath.row]
-        if let _ = launch.dateUtc {
+        guard let launch = viewModel.getLaunchForCell(at: indexPath) else {
+            let errorCell = LaunchCell()
+            errorCell.configure(with: Launch(id: String.ErrorMessage.errorId, name: String.ErrorMessage.errorName, dateUtc: nil, success: false, rocket: String.ErrorMessage.errorRocket), dateFormatter: { _ in String.ErrorMessage.errorDate })
+            return errorCell
+        }
+        
+        if viewModel.hasLaunchDate(launch) {
             cell.configure(with: launch, dateFormatter: viewModel.formatDate)
         } else {
-            cell.configure(with: launch, dateFormatter: { launchDataEmpty in "–" })
+            cell.configure(with: launch, dateFormatter: { _ in String.LocalizationKey.noDate.localized })
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100 // Увеличиваем высоту для карточек / не переносим в Константу! 
+        100
     }
 }
