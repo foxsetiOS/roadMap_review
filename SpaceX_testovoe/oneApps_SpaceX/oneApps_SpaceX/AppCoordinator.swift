@@ -42,7 +42,7 @@ import UIKit
     private func showRocketDetail(rocketId: String) {
         let viewModel = RocketDetailViewModel(
             rocketId: rocketId,
-            networkService: DiContainer.shared.networkService,
+            networkService: DIContainer.shared.networkService,
             settingsManager: SettingsManager.shared
         )
         let viewController = RocketDetailViewController(viewModel: viewModel)
@@ -58,7 +58,7 @@ import UIKit
      private func showLaunches(rocketId: String) {
         let viewModel = LaunchListViewModel(
             rocketId: rocketId,
-            networkService: DiContainer.shared.networkService
+            networkService: DIContainer.shared.networkService
         )
         let viewController = LaunchListViewController(viewModel: viewModel)
         navigationController.pushViewController(viewController, animated: true)
