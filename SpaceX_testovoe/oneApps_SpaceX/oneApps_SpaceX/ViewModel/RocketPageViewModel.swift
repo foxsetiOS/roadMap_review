@@ -24,7 +24,11 @@ final class RocketPageViewModel {
     }
     
     func rocket(at index: Int) -> Rocket? {
-        guard index >= 0 && index < rockets.value.count else { return nil }
+        guard
+            index >= 0 && index < rockets.value.count
+        else {
+            return nil
+        }
         return rockets.value[index]
     }
 }

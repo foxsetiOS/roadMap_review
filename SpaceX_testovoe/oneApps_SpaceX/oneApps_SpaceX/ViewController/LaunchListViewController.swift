@@ -61,18 +61,33 @@ extension LaunchListViewController: UITableViewDataSource, UITableViewDelegate {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
+        guard
+            let cell = tableView.dequeueReusableCell(
             withIdentifier: LaunchCell.identifier,
             for: indexPath
         ) as? LaunchCell else {
             let errorCell = LaunchCell()
-            errorCell.configure(with: Launch(id: "Ошибка", name: "Ошибка загрузки", dateUtc: nil, success: false, rocket: "ошибка загрузки Ракеты"), dateFormatter: { _ in "Ошибка" })
+            errorCell.configure(
+                with: Launch(id: "Ошибка",
+                             name: "Ошибка загрузки",
+                             dateUtc: nil,
+                             success: false,
+                             rocket: "ошибка загрузки Ракеты"
+                            ), dateFormatter: { _ in "Ошибка" })
             return errorCell
         }
         
-        guard let launch = viewModel.getLaunchForCell(at: indexPath) else {
+        guard
+            let launch = viewModel.getLaunchForCell(at: indexPath)
+        else {
             let errorCell = LaunchCell()
-            errorCell.configure(with: Launch(id: String.ErrorMessage.errorId, name: String.ErrorMessage.errorName, dateUtc: nil, success: false, rocket: String.ErrorMessage.errorRocket), dateFormatter: { _ in String.ErrorMessage.errorDate })
+            errorCell.configure(
+                with: Launch(id: String.ErrorMessage.error,
+                             name: String.ErrorMessage.errorName,
+                             dateUtc: nil,
+                             success: false,
+                             rocket: String.ErrorMessage.errorRocket
+                            ), dateFormatter: { _ in String.ErrorMessage.errorDate })
             return errorCell
         }
         

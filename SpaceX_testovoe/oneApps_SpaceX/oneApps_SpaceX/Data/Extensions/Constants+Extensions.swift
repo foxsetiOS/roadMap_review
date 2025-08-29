@@ -33,10 +33,10 @@ extension String {
     }
 
     enum ErrorMessage {
-        static let errorId = "Ошибка"
+        static let error = "Ошибка "
         static let errorName = "Ошибка загрузки"
         static let errorRocket = "ошибка загрузки Ракеты"
-        static let errorDate = "Ошибка"
+        static let errorDate = "Ошибка Data"
     }
 
     enum UI {
@@ -54,7 +54,6 @@ extension String {
         static let cellDequeue = "упал смотри метод cellForRowAt SettingSegmentCell"
     }
     
-    // API
     enum API {
         static let baseUrl = "https://api.spacexdata.com/v4"
         static let rocketsEndpoint = "/rockets"

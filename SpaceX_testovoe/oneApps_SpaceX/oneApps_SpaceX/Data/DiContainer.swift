@@ -17,7 +17,9 @@ final class DIContainer {
     }
     
     var networkService: NetworkServiceProtocol {
-        guard let service = container.resolve(NetworkServiceProtocol.self) else {
+        guard
+            let service = container.resolve(NetworkServiceProtocol.self)
+        else {
             fatalError(String.FatalError.containerDIContainer)
         }
         return service

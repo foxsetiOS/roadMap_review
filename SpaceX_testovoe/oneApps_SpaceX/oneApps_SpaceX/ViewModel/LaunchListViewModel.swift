@@ -47,7 +47,11 @@ final class LaunchListViewModel {
     }
     
     func launch(at index: Int) -> Launch? {
-        guard index >= 0 && index < launches.value.count else { return nil }
+        guard
+            index >= 0 && index < launches.value.count
+        else {
+            return nil
+        }
         return launches.value[index]
     }
     

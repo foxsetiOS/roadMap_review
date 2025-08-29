@@ -1,5 +1,6 @@
-enum Unit: String, Codable, CaseIterable {
-    
+import Foundation
+
+enum Unit: String, CaseIterable, Codable {
     case meters = "m"
     case feet = "ft"
     case kilograms = "kg"

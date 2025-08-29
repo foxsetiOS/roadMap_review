@@ -55,7 +55,11 @@ class RocketPageViewController: UIPageViewController {
     
     private func setupBindings() {
         viewModel.rockets.bind { [weak self] rockets in
-            guard !rockets.isEmpty else { return }
+            guard
+                rockets.isNotEmpty
+            else {
+                return
+            }
             self?.createViewControllers(for: rockets)
             self?.setupInitialViewController()
             self?.pageControl.numberOfPages = rockets.count
@@ -98,7 +102,11 @@ class RocketPageViewController: UIPageViewController {
     }
     
     private func setupInitialViewController() {
-        guard !rocketDetailViewControllers.isEmpty else { return }
+        guard
+            rocketDetailViewControllers.isNotEmpty
+        else {
+            return
+        }
         setViewControllers([rocketDetailViewControllers[0]], direction: .forward, animated: true, completion: nil)
         configureNavigationItems(for: 0)
     }
@@ -113,7 +121,11 @@ class RocketPageViewController: UIPageViewController {
     
     @objc private func handlePageControlChanged(_ sender: UIPageControl) {
         let targetIndex = sender.currentPage
-        guard targetIndex >= 0, targetIndex < rocketDetailViewControllers.count else { return }
+        guard
+            targetIndex >= 0, targetIndex < rocketDetailViewControllers.count
+        else {
+            return
+        }
         
         let currentIndex = viewModel.currentIndex.value
         let direction: UIPageViewController.NavigationDirection = targetIndex >= currentIndex ? .forward : .reverse
@@ -130,9 +142,13 @@ extension RocketPageViewController: UIPageViewControllerDataSource {
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
-        guard let detailViewController = viewController as? RocketDetailViewController,
-              let index = rocketDetailViewControllers.firstIndex(where: { $0 === detailViewController }),
-              index > 0 else { return nil }
+        guard
+            let detailViewController = viewController as? RocketDetailViewController,
+            let index = rocketDetailViewControllers.firstIndex(where: { $0 === detailViewController }),
+              index > 0
+        else {
+            return nil
+        }
         
         return rocketDetailViewControllers[index - 1]
     }
@@ -141,9 +157,13 @@ extension RocketPageViewController: UIPageViewControllerDataSource {
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard let detailViewController = viewController as? RocketDetailViewController,
-              let index = rocketDetailViewControllers.firstIndex(where: { $0 === detailViewController }),
-              index < rocketDetailViewControllers.count - 1 else { return nil }
+        guard
+            let detailViewController = viewController as? RocketDetailViewController,
+            let index = rocketDetailViewControllers.firstIndex(where: { $0 === detailViewController }),
+              index < rocketDetailViewControllers.count - 1
+        else {
+            return nil
+        }
         
         return rocketDetailViewControllers[index + 1]
     }
@@ -157,8 +177,12 @@ extension RocketPageViewController: UIPageViewControllerDelegate {
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool
     ) {
-        guard let currentViewController = pageViewController.viewControllers?.first as? RocketDetailViewController,
-              let currentIndex = rocketDetailViewControllers.firstIndex(where: { $0 === currentViewController }) else { return }
+        guard
+            let currentViewController = pageViewController.viewControllers?.first as? RocketDetailViewController,
+            let currentIndex = rocketDetailViewControllers.firstIndex(where: { $0 === currentViewController })
+        else {
+            return
+        }
         
         viewModel.currentIndex.value = currentIndex
         configureNavigationItems(for: currentIndex)

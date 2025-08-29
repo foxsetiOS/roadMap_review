@@ -58,10 +58,18 @@ final class RocketDetailViewController: UIViewController {
     
     private func configureUserInterface() {
         view.backgroundColor = Theme.Color.colorView
+        setupScrollView()
+        setupContentStackView()
+        setupHeader()
+    }
+
+    private func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
         scrollView.delegate = self
+    }
 
+    private func setupContentStackView() {
         scrollView.addSubview(contentStackView)
         contentStackView.axis = .vertical
         contentStackView.spacing = 25
@@ -70,18 +78,21 @@ final class RocketDetailViewController: UIViewController {
             $0.edges.equalTo(scrollView.contentLayoutGuide).inset(32)
             $0.width.equalTo(scrollView.frameLayoutGuide).inset(32)
         }
-        
-        headerImageView.snp.makeConstraints {
-            $0.height.equalTo(Theme.Size.headerImageHeight)
-        }
-        
+    }
+
+    private func setupHeader() {
+        headerImageView.snp.makeConstraints { $0.height.equalTo(Theme.Size.headerImageHeight) }
         contentStackView.addArrangedSubview(headerImageView)
         contentStackView.addArrangedSubview(titleLabel)
     }
     
     private func bindViewModel() {
         viewModel.rocket.bind { [weak self] rocket in
-            guard let rocket else { return }
+            guard
+                let rocket
+            else {
+                return
+            }
             self?.updateUI(with: rocket)
         }
     }
@@ -115,7 +126,7 @@ final class RocketDetailViewController: UIViewController {
             parameters.append((String.LocalizationKey.country.localized, Localized.localizedCountry(rocket.country)))
 
             if let cost = rocket.costPerLaunch, cost > 0,
-               let formattedCost = formatCurrency(cost) {
+               let formattedCost = FormatCurrency.formatCurrency(cost) {
                 parameters.append((String.LocalizationKey.launchCost.localized, formattedCost))
             }
             
@@ -162,12 +173,14 @@ final class RocketDetailViewController: UIViewController {
     }
 
     private func clearDynamicSections() {
-        let keepCount = 2 // headerImageView, titleLabel
+        setDynamicSectionsHidden(true)
+    }
+
+    private func setDynamicSectionsHidden(_ hidden: Bool) {
+        let keepCount = 2 
         guard contentStackView.arrangedSubviews.count > keepCount else { return }
-        let toRemove = contentStackView.arrangedSubviews.suffix(from: keepCount)
-        toRemove.forEach { view in
-            contentStackView.removeArrangedSubview(view)
-            view.removeFromSuperview()
+        for (index, view) in contentStackView.arrangedSubviews.enumerated() {
+            view.isHidden = index >= keepCount ? hidden : false
         }
     }
     
@@ -209,7 +222,8 @@ final class RocketDetailViewController: UIViewController {
         
         // add стек
         for parameter in parameters {
-            let parameterView = makeCircularParameterView(name: parameter.0, value: parameter.1)
+            let parameterView = buildCircularParameterView(name: parameter.0, value: parameter.1)
+            setupCircularParameterConstraints(parameterView)
             horizontalStack.addArrangedSubview(parameterView)
         }
         
@@ -227,7 +241,7 @@ final class RocketDetailViewController: UIViewController {
         contentStackView.addArrangedSubview(scrollView)
     }
     
-    private func makeCircularParameterView(name: String, value: String) -> UIView {
+    private func buildCircularParameterView(name: String, value: String) -> UIView {
         let containerView = UIView()
         containerView.layer.cornerRadius = 32
         containerView.backgroundColor = Theme.Color.colorCollection
@@ -251,21 +265,27 @@ final class RocketDetailViewController: UIViewController {
         containerView.addSubview(valueLabel)
         containerView.addSubview(nameLabel)
         
+        return containerView
+    }
+    
+    private func setupCircularParameterConstraints(_ containerView: UIView) {
+        guard
+            let valueLabel = containerView.subviews.compactMap({ $0 as? UILabel }).first,
+            let nameLabel = containerView.subviews.compactMap({ $0 as? UILabel }).last
+        else {
+            return
+        }
         containerView.snp.makeConstraints { $0.width.height.equalTo(Theme.Size.circularParameter) }
-        
         valueLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().inset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
         nameLabel.snp.makeConstraints {
             $0.top.equalTo(valueLabel.snp.bottom).offset(2)
             $0.leading.trailing.equalToSuperview().inset(6)
             $0.bottom.lessThanOrEqualToSuperview().inset(8)
         }
-        
-        return containerView
     }
     
     private func addSection(title: String, parameters: [(String, String)]) {
@@ -321,7 +341,11 @@ final class RocketDetailViewController: UIViewController {
     }
     
     @objc private func showLaunches() {
-        guard let rocketId = viewModel.rocket.value?.id else { return }
+        guard
+            let rocketId = viewModel.rocket.value?.id
+        else {
+            return
+        }
         onShowLaunches?(rocketId)
     }
     
@@ -337,7 +361,11 @@ extension RocketDetailViewController: UIScrollViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let insetBottom = scrollView.contentInset.bottom
         let threshold: CGFloat = 20
-        guard contentHeight > 0 else { return }
+        guard
+            contentHeight > 0
+        else {
+            return
+        }
         let isAtBottom = offsetY + visibleHeight >= contentHeight + insetBottom - threshold
         onPageControlVisibilityChange?(isAtBottom)
     }

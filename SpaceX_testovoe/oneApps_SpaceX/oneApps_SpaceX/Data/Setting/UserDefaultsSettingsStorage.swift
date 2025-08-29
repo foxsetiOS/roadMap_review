@@ -30,7 +30,9 @@ final class UserDefaultsSettingsStorage: SettingsStorage {
     }
     
     func load() -> [Setting] {
-        guard let data = userDefaults.data(forKey: Keys.settings) else {
+        guard
+            let data = userDefaults.data(forKey: Keys.settings)
+        else {
             return []
         }
         

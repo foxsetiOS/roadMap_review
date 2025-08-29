@@ -73,7 +73,12 @@ final class SettingsViewController: UITableViewController {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingSegmentCell.identifier, for: indexPath) as? SettingSegmentCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: SettingSegmentCell.identifier,
+                for: indexPath
+            ) as? SettingSegmentCell
+        else {
             fatalError(String.FatalError.cellDequeue)
         }
         let settingType = SettingType.allCases[indexPath.section]
@@ -84,7 +89,8 @@ final class SettingsViewController: UITableViewController {
             options: options.map { $0.symbol },
             selected: options.firstIndex(of: currentUnit ?? options[0]) ?? 0) { [weak self] selectedIndex in
             let unit = options[selectedIndex]
-            self?.viewModel.updateSetting(for: settingType, unit: unit)
+            self?.viewModel.updateSetting(for: settingType, unit: unit
+            )
         }
         return cell
     }
@@ -99,4 +105,3 @@ final class SettingsViewController: UITableViewController {
         heightForHeaderInSection section: Int
     ) -> CGFloat { 20 }
 }
-

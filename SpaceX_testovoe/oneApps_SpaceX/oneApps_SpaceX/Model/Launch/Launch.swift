@@ -5,5 +5,3 @@ struct Launch: Decodable {
     let success: Bool?
     let rocket: String
 }
-
-

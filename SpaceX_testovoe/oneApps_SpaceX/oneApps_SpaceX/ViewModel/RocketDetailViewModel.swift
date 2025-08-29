@@ -40,7 +40,11 @@ final class RocketDetailViewModel {
     }
     
     func convertLength(_ valueInMeters: Double?, for type: SettingType) -> String? {
-        guard let valueInMeters = valueInMeters else { return nil }
+        guard
+            let valueInMeters = valueInMeters
+        else {
+            return nil
+        }
         let unit = settingsManager.getUnit(for: type)
         switch unit {
         case .feet:
@@ -65,7 +69,11 @@ final class RocketDetailViewModel {
         for type: SettingType,
         fractionDigits: Int = 1
     ) -> (value: String?, unit: String?) {
-        guard let valueInMeters = valueInMeters else { return (nil, nil) }
+        guard
+            let valueInMeters = valueInMeters
+        else {
+            return (nil, nil)
+        }
         let unit = settingsManager.getUnit(for: type)
 
         let converted: Double
@@ -76,13 +84,8 @@ final class RocketDetailViewModel {
             converted = valueInMeters
         }
 
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumFractionDigits = fractionDigits
-        formatter.maximumFractionDigits = fractionDigits
-        formatter.usesGroupingSeparator = false
-
-        let valueString = formatter.string(from: NSNumber(value: converted)) ?? String(format: "%.1f", converted)
+        let formatter = NumberFormatter.decimalFormatter(fractionDigits: fractionDigits, grouping: false)
+        let valueString = formatter.string(from: NSNumber(value: converted)) ?? String(format: "%.\(fractionDigits)f", converted)
         return (valueString, unit.symbol)
     }
 
@@ -90,7 +93,11 @@ final class RocketDetailViewModel {
         _ valueInKilograms: Double?,
         for type: SettingType
     ) -> (value: String?, unit: String?) {
-        guard let valueInKilograms = valueInKilograms else { return (nil, nil) }
+        guard
+            let valueInKilograms = valueInKilograms
+        else {
+            return (nil, nil)
+        }
         let unit = settingsManager.getUnit(for: type)
         let converted: Double
         switch unit {
@@ -100,12 +107,7 @@ final class RocketDetailViewModel {
             converted = valueInKilograms
         }
 
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 0
-        formatter.usesGroupingSeparator = true
-
-        let valueString = formatter.string(from: NSNumber(value: converted)) ?? String(Int(converted))
+        let valueString = NumberFormatter.integerWithGrouping.string(from: NSNumber(value: converted)) ?? String(Int(converted))
         return (valueString, unit.symbol)
     }
 
@@ -113,7 +115,11 @@ final class RocketDetailViewModel {
         _ valueInKilograms: Double?,
         for type: SettingType
     ) -> (value: String?, unit: String?) {
-        guard let valueInKilograms = valueInKilograms else { return (nil, nil) }
+        guard
+            let valueInKilograms = valueInKilograms
+        else {
+            return (nil, nil)
+        }
         return formattedMassValue(valueInKilograms, for: type)
     }
 }

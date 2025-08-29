@@ -1,5 +1,6 @@
-enum SettingType: String, Codable, CaseIterable {
-    
+import Foundation
+
+enum SettingType: String, CaseIterable, Codable {
     case height
     case diameter
     case mass

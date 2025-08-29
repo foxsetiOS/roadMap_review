@@ -1,9 +1,8 @@
 import Foundation
 import Alamofire
 
-
 protocol NetworkServiceProtocol {
-    
+
     func fetchRockets() async throws -> [Rocket]
     func fetchLaunches() async throws -> [Launch]
 }

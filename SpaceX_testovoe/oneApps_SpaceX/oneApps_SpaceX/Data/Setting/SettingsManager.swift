@@ -1,7 +1,7 @@
 protocol SettingsManagerProtocol {
-    
     var settings: [Setting] { get }
     var settingsChanged: Observable<Void> { get }
+    
     func setUnit(_ unit: Unit, for type: SettingType)
     func getUnit(for type: SettingType) -> Unit
 }

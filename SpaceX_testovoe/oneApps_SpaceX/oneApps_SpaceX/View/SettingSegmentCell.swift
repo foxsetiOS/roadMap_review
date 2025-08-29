@@ -51,8 +51,9 @@ final class SettingSegmentCell: UITableViewCell {
     func configure(title: String,
                    options: [String],
                    selected: Int,
-                   onChange: @escaping (Int
-                   ) -> Void) {
+                   onChange: @escaping (Int) -> Void
+    )
+    {
         titleLabel.text = title
         segmentControl.removeAllSegments()
         options.enumerated().forEach { index, title in

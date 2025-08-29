@@ -4,7 +4,11 @@ enum DateFormatting {
     
     // Отдельно парсинг
     static func parseFirstFlightDate(_ dateString: String?) -> Date? {
-        guard let dateString else { return nil }
+        guard
+            let dateString
+        else {
+            return nil
+        }
         
         // Статический форматтер для парсинга
         struct Parser {
@@ -22,7 +26,11 @@ enum DateFormatting {
     }
     
     static func parseLaunchDate(_ dateString: String?) -> Date? {
-        guard let dateString else { return nil }
+        guard
+            let dateString
+        else {
+            return nil
+        }
         
         let isoWithFraction = ISO8601DateFormatter()
         isoWithFraction.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
@@ -68,7 +76,11 @@ enum DateFormatting {
     }
     
     static func formatLaunchDate(_ dateString: String?) -> String? {
-        guard let date = parseLaunchDate(dateString) else { return nil }
+        guard
+            let date = parseLaunchDate(dateString)
+        else {
+            return nil
+        }
         
         struct Formatter {
             static let launchFormatter: DateFormatter = {
@@ -85,9 +97,11 @@ enum DateFormatting {
     }
     
     static func formatFirstFlight(_ dateString: String?) -> String? {
-        guard let date = parseFirstFlightDate(dateString) else { return nil }
+        guard
+            let date = parseFirstFlightDate(dateString)
+        else {
+            return nil
+        }
         return formatDateToRussian(date)
     }
 }
-
-
