@@ -5,11 +5,10 @@ final class WelcomeViewController: UIViewController {
     private let viewModel: WelcomeViewModel
     
     private let backgroundImageView: UIImageView = {
-        let imagaView = UIImageView()
-        imagaView.contentMode = .scaleAspectFill
-        
-        imagaView.image = UIImage(named: String.AssetName.spacex) ?? UIImage(named: String.UI.spacexLogo)
-        return imagaView
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: String.AssetName.spacex) ?? UIImage(named: String.UI.spacexLogo)
+        return imageView
     }()
     
     private let startButton: UIButton = {
@@ -33,20 +32,16 @@ final class WelcomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
-        setupActions()
     }
     
     private func setupUI() {
         view.backgroundColor = .black
-        
         view.addSubviews(backgroundImageView, startButton)
         
-        backgroundImageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         
+        backgroundImageView.snp.makeConstraints { $0.edges.equalToSuperview() }
         startButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
             $0.leading.trailing.equalToSuperview().inset(32)
@@ -54,11 +49,7 @@ final class WelcomeViewController: UIViewController {
         }
     }
     
-    private func setupActions() {
-        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
-    }
-    
     @objc private func startButtonTapped() {
-        viewModel.startButtonTapped()
+        viewModel.didTapStartButton()
     }
 }

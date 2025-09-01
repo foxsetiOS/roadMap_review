@@ -28,7 +28,6 @@ class RocketPageViewController: UIPageViewController {
         viewModel.loadRockets()
     }
     
-
     private func setupUI() {
         view.backgroundColor = .black
         dataSource = self
@@ -77,11 +76,7 @@ class RocketPageViewController: UIPageViewController {
     
     private func createViewControllers(for rockets: [Rocket]) {
         rocketDetailViewControllers = rockets.map { rocket in
-            let detailViewModel = RocketDetailViewModel(
-                rocketId: rocket.id,
-                networkService: DIContainer.shared.networkService,
-                settingsManager: SettingsManager.shared
-            )
+            let detailViewModel = RocketDetailViewModel(rocketId: rocket.id)
             let detailViewController = RocketDetailViewController(viewModel: detailViewModel)
             detailViewController.onPageControlVisibilityChange = { [weak self] isVisible in
                 UIView.animate(withDuration: 0.2) {
@@ -130,7 +125,6 @@ class RocketPageViewController: UIPageViewController {
         let currentIndex = viewModel.currentIndex.value
         let direction: UIPageViewController.NavigationDirection = targetIndex >= currentIndex ? .forward : .reverse
         setViewControllers([rocketDetailViewControllers[targetIndex]], direction: direction, animated: true, completion: nil)
-        // При смене страницы скрываем индикатор до тех пор, пока пользователь не доскроллит вниз
         pageControl.alpha = 0
         viewModel.currentIndex.value = targetIndex
         configureNavigationItems(for: targetIndex)
@@ -187,7 +181,6 @@ extension RocketPageViewController: UIPageViewControllerDelegate {
         viewModel.currentIndex.value = currentIndex
         configureNavigationItems(for: currentIndex)
         if completed {
-            // После завершения перелистывания скрываем индикатор, он появится при доскролле вниз
             pageControl.alpha = 0
         }
     }
@@ -196,19 +189,25 @@ extension RocketPageViewController: UIPageViewControllerDelegate {
 private extension RocketPageViewController {
     
     func configureNavigationItems(for index: Int) {
+        configureNavigationTitle(for: index)
+        configureSettingsButton()
+    }
+    
+    private func configureNavigationTitle(for index: Int) {
         if let rocket = viewModel.rocket(at: index) {
             navigationItem.title = rocket.name
         }
-        
+    }
+    
+    private func configureSettingsButton() {
         let settingsImage = UIImage(named: String.AssetName.setting)?.withRenderingMode(.alwaysTemplate)
         let settingsButton = UIBarButtonItem(image: settingsImage, style: .plain, target: self, action: #selector(handleSettingsTap))
         settingsButton.tintColor = .white
         navigationItem.rightBarButtonItem = settingsButton
     }
     
-    @objc func handleSettingsTap() {
+    @objc
+    func handleSettingsTap() {
         onShowSettings?()
     }
 }
-
-

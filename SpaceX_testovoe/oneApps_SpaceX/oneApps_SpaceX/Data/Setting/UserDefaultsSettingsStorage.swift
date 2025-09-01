@@ -10,14 +10,10 @@ final class UserDefaultsSettingsStorage: SettingsStorage {
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
     
-    init(
-        userDefaults: UserDefaults = .standard,
-        encoder: JSONEncoder = JSONEncoder(),
-        decoder: JSONDecoder = JSONDecoder()
-    ) {
+    init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
-        self.encoder = encoder
-        self.decoder = decoder
+        self.encoder = JSONEncoder()
+        self.decoder = JSONDecoder()
     }
     
     func save(settings: [Setting]) {
@@ -35,7 +31,7 @@ final class UserDefaultsSettingsStorage: SettingsStorage {
         else {
             return []
         }
-        
+    
         do {
             return try decoder.decode([Setting].self, from: data)
         } catch {

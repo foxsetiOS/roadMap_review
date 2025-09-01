@@ -1,3 +1,5 @@
+import Foundation
+
 final class RocketPageViewModel {
     
     private let networkService: NetworkServiceProtocol
@@ -14,8 +16,7 @@ final class RocketPageViewModel {
         isLoading.value = true
         Task { @MainActor in
             do {
-                let rocketsResponse = try await networkService.fetchRockets()
-                rockets.value = rocketsResponse
+                rockets.value = try await networkService.fetchRockets()
             } catch {
                 errorMessage.value = "rocket_loading_error".localized + ": \(error.localizedDescription)"
             }

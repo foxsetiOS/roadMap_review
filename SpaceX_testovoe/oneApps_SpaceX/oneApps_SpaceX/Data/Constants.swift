@@ -1,6 +1,5 @@
 import UIKit
 
-
 enum Constants {
     static let defaultInset: CGFloat = Theme.Spacing.default
     static let cornerRadius: CGFloat = Theme.Radius.block
@@ -9,16 +8,28 @@ enum Constants {
     static let headerImageHeight: CGFloat = Theme.Size.headerImageHeight
     static let factorMetersFeet: CGFloat = 3.28084
     static let factorPounds: CGFloat = 2.20462
+    static let tableRowHeight: CGFloat = 100
     
-    // для карточек ячеек
-    static let cardViewInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-    //  для лейблов дат
-    static let dateLabelInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-    // для отступов таблицы
-    static let tableViewContentInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    static let cardViewInsets = UIEdgeInsets(
+        top: 8,
+        left: 16,
+        bottom: 8,
+        right: 16
+    )
+    static let dateLabelInsets = UIEdgeInsets(
+        top: 4,
+        left: 8,
+        bottom: 4,
+        right: 8
+    )
+    static let tableViewContentInsets = UIEdgeInsets(
+        top: 8,
+        left: 0,
+        bottom: 8,
+        right: 0
+    )
     
     static let iconRocket = UIImage(named: "rocketFail")
-    
 }
 
 enum Theme {
@@ -50,6 +61,4 @@ enum Theme {
         static let headerImageHeight: CGFloat = 300
         static let circularParameter: CGFloat = 96
     }
-    
 }
-

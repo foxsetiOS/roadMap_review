@@ -105,7 +105,7 @@ final class LaunchCell: UITableViewCell {
         
         statusIndicator.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview()
-
+            
             $0.size.equalTo(12)
         }
         

@@ -25,7 +25,7 @@ final class SettingsManager: SettingsManagerProtocol {
     }
     
     func setUnit(_ unit: Unit, for type: SettingType) {
-        if let index = settings.firstIndex(where: { $0.type == type }) {
+        if let index = findSettingIndex(for: type) {
             settings[index].unit = unit
         } else {
             settings.append(Setting(type: type, unit: unit))
@@ -34,6 +34,10 @@ final class SettingsManager: SettingsManagerProtocol {
     
     func getUnit(for type: SettingType) -> Unit {
         settings.first { $0.type == type }?.unit ?? defaultUnit(for: type)
+    }
+    
+    private func findSettingIndex(for type: SettingType) -> Int? {
+        settings.firstIndex(where: { $0.type == type })
     }
     
     private func loadOrCreateSettings() -> [Setting] {

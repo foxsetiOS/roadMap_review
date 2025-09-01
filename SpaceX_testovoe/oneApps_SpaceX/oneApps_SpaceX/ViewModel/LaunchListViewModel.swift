@@ -7,12 +7,9 @@ final class LaunchListViewModel {
     let launches = Observable<[Launch]>([])
     let isLoading = Observable<Bool>(false)
     
-    init(
-        rocketId: String,
-        networkService: NetworkServiceProtocol = NetworkService()
-    ) {
+    init(rocketId: String) {
         self.rocketId = rocketId
-        self.networkService = networkService
+        self.networkService = NetworkService()
     }
     
     func loadLaunches() {
@@ -67,5 +64,3 @@ final class LaunchListViewModel {
         launch(at: indexPath.row)
     }
 }
-
-

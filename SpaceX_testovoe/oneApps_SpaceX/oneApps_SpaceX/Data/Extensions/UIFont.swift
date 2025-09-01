@@ -15,12 +15,18 @@ enum LabGrotesqueFont: String {
     case bold = "LabGrotesque-Bold"
     
     func ofSize(_ size: CGFloat) -> UIFont {
-        return UIFont(name: self.rawValue, size: size) ?? UIFont.systemFont(ofSize: size)
+        return UIFont(
+            name: self.rawValue,
+            size: size
+        ) ?? UIFont.systemFont(ofSize: size)
     }
 }
 
 extension UIFont {
-    static func LabGrotesqueFont(style: LabGrotesqueFont, size: FontSize) -> UIFont {
+    static func LabGrotesqueFont(
+        style: LabGrotesqueFont,
+        size: FontSize
+    ) -> UIFont {
         return style.ofSize(size.rawValue)
     }
 }

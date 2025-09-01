@@ -8,14 +8,10 @@ final class RocketDetailViewModel {
     let rocket = Observable<Rocket?>(nil)
     let isLoading = Observable<Bool>(false)
     
-    init(
-        rocketId: String,
-        networkService: NetworkServiceProtocol = NetworkService(),
-        settingsManager: SettingsManagerProtocol = SettingsManager.shared
-    ) {
+    init(rocketId: String) {
         self.rocketId = rocketId
-        self.networkService = networkService
-        self.settingsManager = settingsManager
+        self.networkService = NetworkService()
+        self.settingsManager = SettingsManager.shared
         
         settingsManager.settingsChanged.bind { [weak self] in
             if let current = self?.rocket.value {

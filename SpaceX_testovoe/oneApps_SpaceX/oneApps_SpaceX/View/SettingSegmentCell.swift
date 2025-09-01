@@ -52,8 +52,7 @@ final class SettingSegmentCell: UITableViewCell {
                    options: [String],
                    selected: Int,
                    onChange: @escaping (Int) -> Void
-    )
-    {
+    ) {
         titleLabel.text = title
         segmentControl.removeAllSegments()
         options.enumerated().forEach { index, title in
@@ -63,9 +62,8 @@ final class SettingSegmentCell: UITableViewCell {
         onSelectionChanged = onChange
     }
     
-    @objc private func handleSegmentChanged() {
+    @objc
+    private func handleSegmentChanged() {
         onSelectionChanged?(segmentControl.selectedSegmentIndex)
     }
 }
-
-

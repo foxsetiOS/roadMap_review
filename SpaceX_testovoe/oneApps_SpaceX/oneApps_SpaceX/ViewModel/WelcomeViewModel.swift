@@ -5,8 +5,4 @@ final class WelcomeViewModel {
     func didTapStartButton() {
         onStartButtonTapped?()
     }
-    
-    func startButtonTapped() {
-        onStartButtonTapped?()
-    }
 }

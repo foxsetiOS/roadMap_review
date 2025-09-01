@@ -1,6 +1,7 @@
 import UIKit
 
-@MainActor final class AppCoordinator {
+@MainActor
+final class AppCoordinator {
     
     private let window: UIWindow
     private let navigationController: UINavigationController
@@ -8,8 +9,7 @@ import UIKit
     init(window: UIWindow) {
         self.window = window
         self.navigationController = UINavigationController()
-        navigationController.navigationBar.barStyle = .black
-        navigationController.navigationBar.tintColor = .white
+        setupNavigationBar()
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
@@ -17,8 +17,16 @@ import UIKit
     func start() {
         showWelcomeScreen()
     }
+}
+
+private extension AppCoordinator {
     
-    private func showWelcomeScreen() {
+    private func setupNavigationBar() {
+        navigationController.navigationBar.barStyle = .black
+        navigationController.navigationBar.tintColor = .white
+    }
+    
+    func showWelcomeScreen() {
         let viewModel = WelcomeViewModel()
         let viewController = WelcomeViewController(viewModel: viewModel)
         viewModel.onStartButtonTapped = { [weak self] in
@@ -27,7 +35,7 @@ import UIKit
         navigationController.viewControllers = [viewController]
     }
     
-    private func showRocketPage() {
+    func showRocketPage() {
         let viewModel = RocketPageViewModel()
         let viewController = RocketPageViewController(viewModel: viewModel)
         viewController.onShowLaunches = { [weak self] rocketId in
@@ -39,43 +47,35 @@ import UIKit
         navigationController.pushViewController(viewController, animated: true)
     }
     
-    private func showRocketDetail(rocketId: String) {
-        let viewModel = RocketDetailViewModel(
-            rocketId: rocketId,
-            networkService: DIContainer.shared.networkService,
-            settingsManager: SettingsManager.shared
-        )
-        let viewController = RocketDetailViewController(viewModel: viewModel)
-        viewController.onShowLaunches = { [weak self] rocketId in
-            self?.showLaunches(rocketId: rocketId)
-        }
-        viewController.onShowSettings = { [weak self] in
-            self?.showSettings()
-        }
-        navigationController.pushViewController(viewController, animated: true)
-    }
-    
-     private func showLaunches(rocketId: String) {
-        let viewModel = LaunchListViewModel(
-            rocketId: rocketId,
-            networkService: DIContainer.shared.networkService
-        )
+    func showLaunches(rocketId: String) {
+        let viewModel = LaunchListViewModel(rocketId: rocketId)
         let viewController = LaunchListViewController(viewModel: viewModel)
         navigationController.pushViewController(viewController, animated: true)
     }
     
-    private func showSettings() {
-        let viewModel = SettingsViewModel()
+    func showSettings() {
+        let viewModel = SettingsViewModel(settingsManager: SettingsManager.shared)
         let settingsVC = SettingsViewController(viewModel: viewModel)
-        let sheetNavigationSettings = UINavigationController(rootViewController: settingsVC)
-        sheetNavigationSettings.navigationBar.barStyle = .black
-        sheetNavigationSettings.navigationBar.tintColor = .colorText
-        sheetNavigationSettings.modalPresentationStyle = .popover
-        if let sheet = sheetNavigationSettings.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
-            sheet.prefersGrabberVisible = true
-            sheet.preferredCornerRadius = 16
+        let sheetNavigationController = UINavigationController(rootViewController: settingsVC)
+        setupSettingsNavigation(sheetNavigationController)
+        navigationController.present(sheetNavigationController, animated: true)
+    }
+    
+    private func setupSettingsNavigation(_ navigationController: UINavigationController) {
+        navigationController.navigationBar.barStyle = .black
+        navigationController.navigationBar.tintColor = .colorText
+        navigationController.modalPresentationStyle = .popover
+        
+        navigationController.sheetPresentationController?.configure {
+            $0.detents = [.medium(), .large()]
+            $0.prefersGrabberVisible = true
+            $0.preferredCornerRadius = 16
         }
-        navigationController.present(sheetNavigationSettings, animated: true)
+    }
+}
+
+private extension UISheetPresentationController {
+    func configure(_ block: (UISheetPresentationController) -> Void) {
+        block(self)
     }
 }

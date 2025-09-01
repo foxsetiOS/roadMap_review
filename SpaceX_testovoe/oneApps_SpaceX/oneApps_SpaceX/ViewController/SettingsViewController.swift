@@ -13,7 +13,6 @@ final class SettingsViewController: UITableViewController {
         fatalError(String.FatalError.initCoder)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -81,17 +80,20 @@ final class SettingsViewController: UITableViewController {
         else {
             fatalError(String.FatalError.cellDequeue)
         }
+        
         let settingType = SettingType.allCases[indexPath.section]
         let currentUnit = viewModel.settings.value.first { $0.type == settingType }?.unit
         let options = viewModel.unitOptions(for: settingType)
+        
         cell.configure(
             title: settingType.title,
             options: options.map { $0.symbol },
-            selected: options.firstIndex(of: currentUnit ?? options[0]) ?? 0) { [weak self] selectedIndex in
+            selected: options.firstIndex(of: currentUnit ?? options[0]) ?? 0
+        ) { [weak self] selectedIndex in
             let unit = options[selectedIndex]
-            self?.viewModel.updateSetting(for: settingType, unit: unit
-            )
+            self?.viewModel.updateSetting(for: settingType, unit: unit)
         }
+        
         return cell
     }
     
