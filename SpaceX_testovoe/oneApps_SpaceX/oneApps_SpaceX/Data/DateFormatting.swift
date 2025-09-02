@@ -61,8 +61,7 @@ enum DateFormatting {
         guard
             let dateString = dateString?.trimmingCharacters(in: .whitespacesAndNewlines),
               !dateString.isEmpty
-        else
-        {
+        else {
             return nil
         }
         return Formatters.simpleParser.date(from: dateString)
@@ -72,8 +71,7 @@ enum DateFormatting {
         guard
             let dateString = dateString?.trimmingCharacters(in: .whitespacesAndNewlines),
               !dateString.isEmpty
-        else
-        {
+        else {
             return nil
         }
         
@@ -102,8 +100,7 @@ enum DateFormatting {
     static func formatLaunchDate(_ dateString: String?) -> String? {
         guard
             let date = parseLaunchDate(dateString)
-        else
-        {
+        else {
             return nil
         }
         return formatDateToRussian(date)
@@ -112,8 +109,7 @@ enum DateFormatting {
     static func formatFirstFlight(_ dateString: String?) -> String? {
         guard
             let date = parseFirstFlightDate(dateString)
-        else
-        {
+        else {
             return nil
         }
         return formatDateToRussian(date)
